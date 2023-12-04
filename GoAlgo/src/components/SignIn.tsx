@@ -50,7 +50,6 @@ export default function SignIn() {
       style={{
         background: "#F3F4F6",
         borderRadius: "12px",
-        border: "3px",
         position: "absolute",
         top: "50%",
         left: "50%",
