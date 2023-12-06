@@ -62,7 +62,7 @@ export function UserCard() {
                       color: "black",
                     }}
                   >
-                    Баланс: {pageUser.balance}
+                    Баланс: {pageUser.balance} ₽
                   </p>
                 </Box>
               </Grid>

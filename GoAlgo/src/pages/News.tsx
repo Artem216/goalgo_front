@@ -1,15 +1,14 @@
 import React from 'react';
 
 import ResponsiveAppBar from '../components/Navbar';
-import StockCards from '../components/StockCards';
 
-function Main() {
+
+function News() {
     return (
         <div style={{}}>
             <ResponsiveAppBar />
-            <StockCards />
         </div>
     );
 }
 
-export default Main;
+export default News;

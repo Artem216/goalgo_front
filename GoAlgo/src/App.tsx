@@ -6,6 +6,8 @@ import SignIn from "./components/SignIn.tsx";
 import Main from "./pages/Main.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import Profile from "./pages/Profile.tsx";
+import News from "./pages/News.tsx"
+import Stats from "./pages/Stats.tsx"
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/auth" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/stats" element={<Stats />} />
         {/* <Route element={<RequireAuth />}>
         <Route path="/profile" element={<Profile />} />
         </Route> */}

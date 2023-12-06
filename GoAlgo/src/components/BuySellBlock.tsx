@@ -113,6 +113,7 @@ const BuySellBlock: React.FC = () => {
       amount: 7,
       status: false,
     },
+    
   ];
 
   return (
@@ -123,7 +124,7 @@ const BuySellBlock: React.FC = () => {
         borderRadius: 4,
         paddingBottom: "20px",
         minHeight: "700px",
-        maxHeight: "700px",
+        border: "1px solid red",
       }}
     >
       <p
