@@ -1,44 +1,75 @@
-import * as React from "react";
-// import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-// function Copyright(props: any) {
-//   return (
-//     <Typography
-//       variant="body2"
-//       color="text.secondary"
-//       align="center"
-//       {...props}
-//     >
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
+import { AuthApiServiceInstance } from "../app/AuthApiService";
+import { UserApiServiceInstance } from "../app/UserApiService";
+
+import { useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+
+import { rootStore } from "../stores/RootStore.ts";
+
+import { useEffect } from "react";
 
 export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [registerDisabled, setRegisterDisabled] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [err, setErr] = useState<null | string>(null);
+
+  useEffect(() => {
+    if (email && firstName && lastName && password) {
+      setRegisterDisabled(false);
+    } else {
+      setRegisterDisabled(true);
+    }
+  }, [email, firstName, lastName, password]);
+
+  const register = () => {
+    setLoading(true);
+    if (!email || !firstName || !lastName || !password) {
+      setErr("Заполните все поля");
+      setLoading(false);
+      return;
+    }
+    const fetchToken = async () => {
+      AuthApiServiceInstance.createUser({
+        email: email,
+        first_name: firstName,
+        last_name: lastName,
+        password: password,
+      })
+        .then((tokenData) => {
+          console.log(tokenData);
+          UserApiServiceInstance.getUserData().then((userData) => {
+            console.log(userData);
+            rootStore.setUser(userData);
+            navigate("/profile");
+            return;
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          setErr("Введён неверный логин или пароль");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+    fetchToken();
+    setLoading(false);
   };
 
   return (
@@ -67,7 +98,7 @@ export default function SignUp() {
         <Typography component="h1" variant="h5" sx={{ pb: "40px" }}>
           Регистрация
         </Typography>
-        <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Box component="form" noValidate sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
               <TextField
@@ -77,6 +108,8 @@ export default function SignUp() {
                 fullWidth
                 id="firstName"
                 label="Имя"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 autoFocus
               />
             </Grid>
@@ -87,6 +120,8 @@ export default function SignUp() {
                 id="lastName"
                 label="Фамилия"
                 name="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 autoComplete="family-name"
               />
             </Grid>
@@ -97,6 +132,8 @@ export default function SignUp() {
                 id="email"
                 label="Email"
                 name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
               />
             </Grid>
@@ -108,16 +145,18 @@ export default function SignUp() {
                 label="Пароль"
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 autoComplete="new-password"
               />
             </Grid>
           </Grid>
           <Button
-            type="submit"
+            type="button"
             fullWidth
             variant="contained"
-            href="/"
             sx={{ mt: 3, mb: 2 }}
+            onClick={register}
           >
             Зарегистрироваться
           </Button>
@@ -130,7 +169,6 @@ export default function SignUp() {
           </Grid>
         </Box>
       </Box>
-      {/* <Copyright sx={{ mt: 5 }} /> */}
     </Container>
   );
 }

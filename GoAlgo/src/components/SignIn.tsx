@@ -1,46 +1,59 @@
-import * as React from "react";
-// import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-// import FormControlLabel from "@mui/material/FormControlLabel";
-// import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-// import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-// function Copyright(props: any) {
-//   return (
-//     <Typography
-//       variant="body2"
-//       color="text.secondary"
-//       align="center"
-//       {...props}
-//     >
-//       {"Copyright © "}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{" "}
-//       {new Date().getFullYear()}
-//       {"."}
-//     </Typography>
-//   );
-// }
+import { AuthApiServiceInstance } from "../app/AuthApiService";
+import { UserApiServiceInstance } from "../app/UserApiService";
 
-// TODO remove, this demo shouldn't need to reset the theme.
+import { useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+
+import { rootStore } from "../stores/RootStore.ts";
 
 export default function SignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  // const [login, { isLoading }] = useLoginMutation();
+  const [_err, setErr] = useState<null | string>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const login = () => {
+    setLoading(true);
+    const fetchToken = async () => {
+      console.log({
+        username: username,
+        password: password,
+      });
+      AuthApiServiceInstance.getAccessToken({
+        username: username,
+        password: password,
+      })
+        .then((res) => {
+          console.log("12312");
+          UserApiServiceInstance.getUserData().then((userData) => {
+            console.log(userData);
+            rootStore.setUser(userData);
+            navigate("/profile");
+            return;
+          });
+        })
+        .catch((err) => {
+          setErr("Введён неверный логин или пароль");
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    };
+    fetchToken();
   };
 
   return (
@@ -69,15 +82,16 @@ export default function SignIn() {
         <Typography component="h1" variant="h5">
           Вход
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 3 }}>
+        <Box component="form" noValidate sx={{ mt: 3 }}>
           <TextField
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="username"
             label="Email"
-            name="email"
-            autoComplete="email"
+            name="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             autoFocus
           />
           <TextField
@@ -87,21 +101,24 @@ export default function SignIn() {
             name="password"
             label="Password"
             type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             id="password"
             autoComplete="current-password"
           />
           <Button
-            type="submit"
+            // type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2, background: "#FF0508" }}
+            onClick={login}
           >
             Войти
           </Button>
           <Grid container>
             <Grid item>
-              <Link sx={{ fontSize: "20px" }} href="/signup" variant="body2">
-                {"Нет аккаунта? Зарегистририроваться."}
+              <Link sx={{ fontSize: "20px" }} href="/register" variant="body2">
+                {"Нет аккаунта? Зарегистрироваться."}
               </Link>
             </Grid>
           </Grid>

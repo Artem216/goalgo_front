@@ -5,19 +5,21 @@ import DataBox from "../components/DataBox";
 import { useEffect, useState } from "react";
 
 import axios from "axios";
-import API_HOST from "../app/api/api";
 import { User } from "../types";
 import BuySellBlock from "../components/BuySellBlock";
 
 export function UserCard() {
   const [editing, setEditing] = useState(false);
-  const pageUser: User = {
-    id: 1,
-    email: "artemtsykanov22@gmail.com",
-    first_name: "Артём",
-    last_name: "Цыканов",
-    balance: 1000000,
-  };
+  // const pageUser: User = {
+  //   id: 1,
+  //   email: "artemtsykanov22@gmail.com",
+  //   first_name: "Артём",
+  //   last_name: "Цыканов",
+  //   balance: 1000000,
+  // };
+
+  // const [pageUser, setPageUser]: User = useState("");
+
   if (pageUser) {
     return (
       <div
