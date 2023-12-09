@@ -1,24 +1,29 @@
 import { Box, Button, Grid, TextField, Autocomplete } from "@mui/material";
 import Navbar from "../components/Navbar";
-import DataBox from "../components/DataBox";
 
 import { useEffect, useState } from "react";
 
-import axios from "axios";
 import { User } from "../types";
 import BuySellBlock from "../components/BuySellBlock";
 
+import { UserApiServiceInstance } from "../app/UserApiService";
+
+import TabPanel from "../components/TabPanel";
+
 export function UserCard() {
   const [editing, setEditing] = useState(false);
-  // const pageUser: User = {
-  //   id: 1,
-  //   email: "artemtsykanov22@gmail.com",
-  //   first_name: "Артём",
-  //   last_name: "Цыканов",
-  //   balance: 1000000,
-  // };
 
-  // const [pageUser, setPageUser]: User = useState("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [pageUser, setPageUser] = useState<User>();
+
+  useEffect(() => {
+    const fetchActivityData = async () => {
+      const data = await UserApiServiceInstance.getUserData();
+      setPageUser(data);
+      setLoading(false);
+    };
+    fetchActivityData();
+  }, []);
 
   if (pageUser) {
     return (
@@ -38,7 +43,7 @@ export function UserCard() {
             sx={{
               padding: 2,
               backgroundColor: "#ffffff14",
-              textAlign: "center",
+              textAlign: "start",
               width: "100%",
               borderRadius: 4,
             }}
@@ -47,8 +52,10 @@ export function UserCard() {
               style={{
                 borderBottom: "2px solid #FF0508",
                 paddingBottom: "2px",
-                fontWeight: "700",
                 fontSize: "30px",
+                fontWeight: "200",
+                lineHeight: "normal",
+                fontFamily: "Roboto, sans-serif",
                 color: "black",
               }}
             >
@@ -59,8 +66,10 @@ export function UserCard() {
                 <Box>
                   <p
                     style={{
-                      fontWeight: "700",
-                      fontSize: "30px",
+                      fontSize: "40px",
+                      fontWeight: "200",
+                      lineHeight: "normal",
+                      fontFamily: "Roboto, sans-serif",
                       color: "black",
                     }}
                   >
@@ -71,7 +80,7 @@ export function UserCard() {
             </Grid>
           </Box>
           <Box>
-            <Button
+            {/* <Button
               onClick={() => {
                 console.log("updating user");
                 if (editing) {
@@ -100,7 +109,7 @@ export function UserCard() {
               }}
             >
               Отредактировать данные
-            </Button>
+            </Button> */}
           </Box>
         </div>
       </div>
@@ -115,8 +124,12 @@ export default function Profile() {
     <>
       <Navbar />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <Box className="profile">
+        <Box
+          className="profile"
+          sx={{ display: "flex", flexDirection: "column" }}
+        >
           <UserCard />
+          <TabPanel />
         </Box>
         <BuySellBlock />
       </div>
