@@ -113,6 +113,7 @@ function RecSys() {
                   justifyContent: "space-between",
                   paddingTop: "25px",
                   paddingLeft: "25px",
+                  fontWeight: "800",
                 }}
               >
                 <div>{stock.name}</div>

@@ -55,7 +55,7 @@ export default function TabPanel() {
           aria-label="basic tabs example"
         >
           <Tab label="Сессии ботов" {...a11yProps(0)} />
-          <Tab label="Добавить Готовый" {...a11yProps(1)} />
+          <Tab label="Добавить Бота" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>

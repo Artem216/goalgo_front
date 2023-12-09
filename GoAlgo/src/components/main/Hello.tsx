@@ -29,7 +29,11 @@ function Hello() {
           НАЧНИТЕ СВОЙ ПУТЬ В АЛГОТРЕЙДИНГЕ ВМЕСТЕ С НАМИ!
         </div>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button variant="contained" sx={{ width: "216px", height: "56px" }}>
+          <Button
+            variant="contained"
+            sx={{ width: "216px", height: "56px" }}
+            href="/login"
+          >
             <p
               style={{
                 fontSize: "20px",
@@ -43,6 +47,7 @@ function Hello() {
           <Button
             variant="contained"
             sx={{ ml: "24px", mb: "25px", width: "216px", height: "56px" }}
+            href="/register"
           >
             <p
               style={{

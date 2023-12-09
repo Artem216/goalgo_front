@@ -1,5 +1,5 @@
 export interface IStocksNames {
+  label: string;
   code: string;
-  title: string;
   group: string;
 }
