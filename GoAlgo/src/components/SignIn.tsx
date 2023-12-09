@@ -38,7 +38,6 @@ export default function SignIn() {
         password: password,
       })
         .then((res) => {
-          console.log("12312");
           UserApiServiceInstance.getUserData().then((userData) => {
             console.log(userData);
             rootStore.setUser(userData);
@@ -107,7 +106,7 @@ export default function SignIn() {
             autoComplete="current-password"
           />
           <Button
-            type="submit"
+            // type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2, background: "#FF0508" }}
