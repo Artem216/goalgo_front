@@ -106,7 +106,7 @@ export default function SignIn() {
             autoComplete="current-password"
           />
           <Button
-            // type="submit"
+            type="submit"
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2, background: "#FF0508" }}

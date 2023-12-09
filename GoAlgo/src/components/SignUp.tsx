@@ -162,7 +162,7 @@ export default function SignUp() {
           </Button>
           <Grid container justifyContent="flex-end">
             <Grid item>
-              <Link sx={{ fontSize: "20px" }} href="/auth" variant="body2">
+              <Link sx={{ fontSize: "20px" }} href="/login" variant="body2">
                 Уже есть аккаунт? Войти.
               </Link>
             </Grid>
