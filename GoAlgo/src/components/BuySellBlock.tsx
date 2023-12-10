@@ -4,42 +4,43 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { API_URL } from "../config";
 import axios from "axios";
+import authHeader from "../utils/authHeaders";
 
 interface Transaction {
+  price: string;
+  quantity: number;
+  deal_type: string;
+  user: string;
+  instrument: string;
+  balance: number;
   id: number;
-  name: string;
-  date: string;
-  price: number;
-  amount: number;
-  status: boolean;
+  datetime: Date;
 }
 
 const BuySellBlock: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const [loading, setLoading] = useState(true);
 
   const fetchData = async () => {
     try {
       const botSessionsResponse = await axios.get(
-        API_URL + "/api/v1/trader/get_all_user_bots"
-      );
-
-      const activeBots = botSessionsResponse.data.filter(
-        (bot: any) => bot.status === true
+        API_URL + "/api/v1/trader/get_all_user_bots",
+        {
+          headers: authHeader(),
+        }
       );
 
       const transactionsResponse = await Promise.all(
-        activeBots.map(async (bot: any) => {
+        botSessionsResponse.data.map(async (bot: any) => {
           const dealsResponse = await axios.post(
             API_URL + "/api/v1/trader/user_deals_by_instrument",
             {
               instrument_code: bot.instrument_code,
+            },
+            {
+              headers: authHeader(),
             }
           );
-
           return dealsResponse.data;
         })
       );
@@ -47,10 +48,21 @@ const BuySellBlock: React.FC = () => {
       const mergedTransactions = transactionsResponse.flat();
 
       setTransactions(mergedTransactions);
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   if (transactions.length > 0) {
     return (
       <div
@@ -94,17 +106,26 @@ const BuySellBlock: React.FC = () => {
               display: "flex",
               flexDirection: "row",
               padding: "10px 20px",
-              backgroundColor: transaction.status ? "#21D329" : "#D32121",
+              backgroundColor:
+                transaction.deal_type == "buy" ? "#21D329" : "#D32121",
               borderRadius: "8px",
               marginTop: "5px",
               marginRight: "20px",
               marginLeft: "20px",
             }}
           >
-            <div style={{ flex: 1 }}>{transaction.name}</div>
-            <div style={{ flex: 1 }}>{transaction.date}</div>
+            <div style={{ flex: 1 }}>{transaction.instrument}</div>
+            <div style={{ flex: 1 }}>
+              {transaction.datetime
+                .toLocaleString(undefined, {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })
+                .slice(0, 10)}
+            </div>
             <div style={{ flex: 1 }}>{transaction.price}</div>
-            <div style={{ flex: 1 }}>{transaction.amount}</div>
+            <div style={{ flex: 1 }}>{transaction.quantity}</div>
           </div>
         ))}
       </div>

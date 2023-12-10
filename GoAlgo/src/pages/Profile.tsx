@@ -25,6 +25,10 @@ export function UserCard() {
     fetchActivityData();
   }, []);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   if (pageUser) {
     return (
       <div

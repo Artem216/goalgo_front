@@ -11,6 +11,7 @@ import { Button, TextField } from "@mui/material";
 function AddSession() {
   const [balance, setBallance] = useState("");
   const [selectedStock, setSelectedStock] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleStockSelect = (value) => {
     setSelectedStock(value);
@@ -18,6 +19,7 @@ function AddSession() {
 
   const addBot = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(
         API_URL + "/api/v1/trader/add_bot",
         {
@@ -30,10 +32,16 @@ function AddSession() {
       );
       console.log(response.data);
       window.location.reload();
+      setLoading(false);
     } catch (error) {
       console.error(error);
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   return (
     <div>
       <div>

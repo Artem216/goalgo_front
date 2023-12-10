@@ -67,3 +67,61 @@ export default function TabPanel() {
     </Box>
   );
 }
+
+// function TabPanel() {
+//   const [value, setValue] = React.useState(0);
+
+//   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+//     setValue(newValue);
+//   };
+
+//   return (
+//     <Box sx={{ width: "100%" }}>
+//       <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+//         <Tabs
+//           value={value}
+//           onChange={handleChange}
+//           aria-label="basic tabs example"
+//         >
+//           <Tab label="Сессии ботов" {...a11yProps(0)} />
+//           <Tab label="Добавить Бота" {...a11yProps(1)} />
+//         </Tabs>
+//       </Box>
+//       <CustomTabPanel value={value} index={0}>
+//         <Sessions />
+//       </CustomTabPanel>
+//       <CustomTabPanel value={value} index={1}>
+//         <AddSession />
+//       </CustomTabPanel>
+//     </Box>
+//   );
+// }
+
+// function CustomTabPanel(props: TabPanelProps) {
+//   const { children, value, index, ...other } = props;
+
+//   return (
+//     <div
+//       role="tabpanel"
+//       hidden={value !== index}
+//       id={`simple-tabpanel-${index}`} // исправление: использование обратных кавычек
+//       aria-labelledby={`simple-tab-${index}`} // исправление: использование обратных кавычек
+//       {...other}
+//     >
+//       {value === index && (
+//         <Box sx={{ p: 3 }}>
+//           <Typography>{children}</Typography>
+//         </Box>
+//       )}
+//     </div>
+//   );
+// }
+
+// function a11yProps(index: number) {
+//   return {
+//     id: `simple-tab-${index}`, // исправление: использование обратных кавычек
+//     "aria-controls": `simple-tabpanel-${index}`, // исправление: использование обратных кавычек
+//   };
+// }
+
+// export default TabPanel;
