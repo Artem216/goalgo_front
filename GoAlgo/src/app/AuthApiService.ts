@@ -20,9 +20,7 @@ class AuthApiService {
     if (response.status == 200) {
       localStorage.setItem("token", response.data.access_token);
     }
-    if (response.status == 422) {
-      console.log(response.status);
-    }
+
     return response.data;
   }
   public async createUser(data: ISignUpData): Promise<IAccessToken> {
