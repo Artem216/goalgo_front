@@ -9,6 +9,8 @@ import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 
+import logo from "../assets/photos/photo_2023-12-08_14-55-22-PhotoRoom.png-PhotoRoom.png";
+
 interface Pages {
   url: string;
   name: string;
@@ -36,12 +38,12 @@ function ResponsiveAppBar() {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Typography
-            variant="h6"
-            noWrap
-            component="a"
+          <div
+            // variant="h6"
+            // noWrap
+            // component="a"
             href="/"
-            sx={{
+            style={{
               mr: 2,
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
@@ -51,8 +53,10 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            Название
-          </Typography>
+            <a href="/">
+              <img src={logo} style={{ width: "80px", height: "80px" }} />
+            </a>
+          </div>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton

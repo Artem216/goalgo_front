@@ -10,11 +10,46 @@ import { UserApiServiceInstance } from "../app/UserApiService";
 
 import TabPanel from "../components/TabPanel";
 
+import axios from "axios";
+import authHeader from "../utils/authHeaders";
+import { botSession } from "../components/TabPanel/Sessions";
+import { API_URL } from "../config";
+
 export function UserCard() {
   const [editing, setEditing] = useState(false);
 
   const [loading, setLoading] = useState<boolean>(true);
   const [pageUser, setPageUser] = useState<User>();
+
+  const [userBotSessions, setUserBotSessions] = useState<botSession[]>([]);
+  const [activeStates, setActiveStates] = useState<boolean[]>([]);
+
+  const fetchBotSessions = async () => {
+    try {
+      const response = await axios.get(
+        API_URL + "/api/v1/trader/get_all_user_bots",
+        {
+          headers: authHeader(),
+        }
+      );
+      console.log(response.data);
+      setUserBotSessions(response.data);
+      setActiveStates(response.data.map(() => false));
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBotSessions();
+  }, []);
+
+  const totalBalance = userBotSessions.reduce((total, session) => {
+    const balance = parseFloat(session.current_balance);
+    return total + balance;
+  }, 0);
 
   useEffect(() => {
     const fetchActivityData = async () => {
@@ -77,44 +112,13 @@ export function UserCard() {
                       color: "black",
                     }}
                   >
-                    Баланс: {pageUser.balance} ₽
+                    Баланс: {totalBalance} ₽
                   </p>
                 </Box>
               </Grid>
             </Grid>
           </Box>
-          <Box>
-            {/* <Button
-              onClick={() => {
-                console.log("updating user");
-                if (editing) {
-                  // props.handleUserUpdate();
-                  setPageUser({
-                    ...pageUser,
-                    // tg_username: telegramText!,
-                  });
-                  setEditing(false);
-                } else {
-                  setEditing(true);
-                }
-              }}
-              sx={{
-                mt: 2,
-                padding: 2,
-                backgroundColor: "#FF0508",
-                // border: "1px solid #C059FF",
-                color: "#FFF",
-                width: "100%",
-                fontSize: "14px",
-                borderRadius: 4,
-                "&:hover": {
-                  backgroundColor: "#D78181",
-                },
-              }}
-            >
-              Отредактировать данные
-            </Button> */}
-          </Box>
+          <Box></Box>
         </div>
       </div>
     );

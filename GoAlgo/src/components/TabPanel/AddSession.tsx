@@ -20,11 +20,15 @@ function AddSession() {
   const addBot = async () => {
     try {
       setLoading(true);
+      console.log(selectedStock, balance);
+      // const formData = new FormData();
+      // formData.append();
       const response = await axios.post(
         API_URL + "/api/v1/trader/add_bot",
         {
-          code: selectedStock,
-          // balance: balance,
+          instrument_code: selectedStock,
+          start_balance: balance,
+          status: false,
         },
         {
           headers: authHeader(),
