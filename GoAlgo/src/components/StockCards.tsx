@@ -23,7 +23,7 @@ function StockCards() {
             style={{
               display: "flex",
               flexDirection: "column",
-              background: "#black",
+              background: "#000000",
               color: stock[12] < 0 ? "#FF0000" : "#00FF00",
               height: "60px",
               width: "180px",

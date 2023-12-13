@@ -172,14 +172,14 @@ function Sessions() {
               </div>
               {/* <div style={{ flex: "1" }}>{card.stock}</div> */}
               <div style={{ flex: "1", marginLeft: "20px" }}>
-                {parseInt(card.current_balance) + parseInt(card.in_stock)}
+                {parseFloat(card.current_balance) + parseFloat(card.in_stock)}
               </div>
               <div
                 style={{
                   color:
-                    parseInt(card.current_balance) +
-                      parseInt(card.in_stock) -
-                      parseInt(card.start_balance) <
+                    parseFloat(card.current_balance) +
+                      parseFloat(card.in_stock) -
+                      parseFloat(card.start_balance) <
                     0
                       ? "red"
                       : "green",
@@ -187,9 +187,9 @@ function Sessions() {
                   marginLeft: "20px",
                 }}
               >
-                {parseInt(card.current_balance) +
-                  parseInt(card.in_stock) -
-                  parseInt(card.start_balance)}
+                {parseFloat(card.current_balance) +
+                  parseFloat(card.in_stock) -
+                  parseFloat(card.start_balance)}
               </div>
               <div style={{ flex: "1" }}>
                 <Button
