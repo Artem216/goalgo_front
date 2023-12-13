@@ -15,18 +15,17 @@ export interface botSession {
 
 function Sessions() {
   const [loading, setLoading] = useState(true);
-  const [userBotSessions, setUserBotSessions] = useState<botSession[]>([]);
-  const [activeStates, setActiveStates] = useState<boolean[]>([]);
+  const [userBotSessions, setUserBotSessions] = useState([]);
+  const [activeStates, setActiveStates] = useState([]);
 
   const fetchBotSessions = async () => {
     try {
       const response = await axios.get(
-        API_URL + "/api/v1/trader/get_all_user_bots",
+        `${API_URL}/api/v1/trader/get_all_user_bots`,
         {
           headers: authHeader(),
         }
       );
-      console.log(response.data);
       setUserBotSessions(response.data);
       setActiveStates(response.data.map(() => false));
       setLoading(false);
@@ -36,9 +35,113 @@ function Sessions() {
     }
   };
 
+  const updateCurrentBalance = (targetInstrumentCode, newBalance) => {
+    const updatedSessions = userBotSessions.map((session) => {
+      if (session.instrument_code === targetInstrumentCode) {
+        return { ...session, current_balance: newBalance };
+      }
+      return session;
+    });
+    setUserBotSessions(updatedSessions);
+  };
+
+  const postData = async (instrumentCode) => {
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/v1/trader/user_deals_by_instrument`,
+        {
+          instrument_code: instrumentCode,
+        },
+        {
+          headers: authHeader(),
+        }
+      );
+      const lastDeal = response.data[response.data.length - 1];
+      if (lastDeal.deal_type === "buy") {
+        4;
+        const new_balance = lastDeal.quantity * lastDeal.price;
+        updateCurrentBalance(instrumentCode, new_balance);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     fetchBotSessions();
   }, []);
+
+  useEffect(() => {
+    userBotSessions.forEach((session) => {
+      const { instrument_code } = session;
+      postData(instrument_code);
+    });
+  }, [userBotSessions]);
+  // const [loading, setLoading] = useState(true);
+  // const [userBotSessions, setUserBotSessions] = useState<botSession[]>([]);
+  // const [activeStates, setActiveStates] = useState<boolean[]>([]);
+
+  // const fetchBotSessions = async () => {
+  //   try {
+  //     const response = await axios.get(
+  //       API_URL + "/api/v1/trader/get_all_user_bots",
+  //       {
+  //         headers: authHeader(),
+  //       }
+  //     );
+  //     console.log(response.data);
+  //     setUserBotSessions(response.data);
+  //     setActiveStates(response.data.map(() => false));
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.error(error);
+  //     setLoading(false);
+  //   }
+  // };
+
+  // const postData = async (instrumentCode) => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${API_URL}/api/v1/trader/user_deals_by_instrument`,
+  //       {
+  //         instrument_code: instrumentCode,
+  //       },
+  //       {
+  //         headers: authHeader(),
+  //       }
+  //     );
+
+  //     const lastDeal = response.data[response.data.length - 1];
+  //     if (lastDeal.deal_type === "buy") {
+  //       const updatedSessions = userBotSessions.map((session: botSession) => {
+  //         if (session.instrument_code === instrumentCode) {
+  //           // Обновляем поле current_balance
+  //           return updateCurrentBalance(session, lastDeal.new_balance);
+  //         }
+  //         return session;
+  //       });
+
+  //       // Обновляем состояние userBotSessions
+  //       setUserBotSessions(updatedSessions);
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchBotSessions();
+  // }, []);
+
+  // const updateCurrentBalance = (session: botSession, newBalance: number) => {
+  //   const updatedSession = { ...session, current_balance: newBalance };
+  //   return updatedSession;
+  // };
+
+  // userBotSessions.forEach((session) => {
+  //   const { instrument_code } = session;
+  //   postData(instrument_code);
+  // });
 
   if (loading) {
     return <div>Loading...</div>;
