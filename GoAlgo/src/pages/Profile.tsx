@@ -46,12 +46,13 @@ export function UserCard() {
     fetchBotSessions();
   }, []);
 
-  const totalBalance = userBotSessions.reduce((total, session) => {
-    const balance = (
-      parseFloat(session.current_balance) + parseFloat(session.in_stock)
-    ).toFixed(2);
-    return parseFloat(total).toFixed(2) + parseFloat(balance).toFixed(2);
-  }, 0);
+  const totalBalance = userBotSessions
+    .reduce((total, session) => {
+      const balance =
+        parseFloat(session.current_balance) + parseFloat(session.in_stock);
+      return parseFloat(total) + balance;
+    }, 0)
+    .toFixed(2);
 
   useEffect(() => {
     const fetchActivityData = async () => {
