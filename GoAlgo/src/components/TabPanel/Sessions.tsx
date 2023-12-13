@@ -143,6 +143,10 @@ function Sessions() {
       </div>
       {userBotSessions.map((card, index) => {
         const isActive = activeStates[index]; // Получаем текущее состояние для каждой сессии бота
+        const ballance = (
+          parseFloat(card.current_balance) + parseFloat(card.in_stock)
+        ).toFixed(2);
+
         return (
           <div
             style={{
@@ -170,26 +174,18 @@ function Sessions() {
               <div style={{ flex: "1", fontWeight: "bold", fontSize: "20px" }}>
                 {card.instrument_code}
               </div>
-              {/* <div style={{ flex: "1" }}>{card.stock}</div> */}
-              <div style={{ flex: "1", marginLeft: "20px" }}>
-                {parseFloat(card.current_balance) + parseFloat(card.in_stock)}
-              </div>
+              <div style={{ flex: "1", marginLeft: "20px" }}>{ballance}</div>
               <div
                 style={{
                   color:
-                    parseFloat(card.current_balance) +
-                      parseFloat(card.in_stock) -
-                      parseFloat(card.start_balance) <
-                    0
+                    ballance - parseFloat(card.start_balance).toFixed(2) < 0
                       ? "red"
                       : "green",
                   flex: "1",
                   marginLeft: "20px",
                 }}
               >
-                {parseFloat(card.current_balance) +
-                  parseFloat(card.in_stock) -
-                  parseFloat(card.start_balance)}
+                {ballance - parseFloat(card.start_balance).toFixed(2)}
               </div>
               <div style={{ flex: "1" }}>
                 <Button
