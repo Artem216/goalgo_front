@@ -146,6 +146,7 @@ function Sessions() {
         const ballance = (
           parseFloat(card.current_balance) + parseFloat(card.in_stock)
         ).toFixed(2);
+        const profit = (ballance - parseFloat(card.start_balance)).toFixed(2);
 
         return (
           <div
@@ -177,15 +178,12 @@ function Sessions() {
               <div style={{ flex: "1", marginLeft: "20px" }}>{ballance}</div>
               <div
                 style={{
-                  color:
-                    ballance - parseFloat(card.start_balance).toFixed(2) < 0
-                      ? "red"
-                      : "green",
+                  color: profit < 0 ? "red" : "green",
                   flex: "1",
                   marginLeft: "20px",
                 }}
               >
-                {ballance - parseFloat(card.start_balance).toFixed(2)}
+                {profit}
               </div>
               <div style={{ flex: "1" }}>
                 <Button

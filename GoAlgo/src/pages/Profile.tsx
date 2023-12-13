@@ -47,8 +47,8 @@ export function UserCard() {
   }, []);
 
   const totalBalance = userBotSessions.reduce((total, session) => {
-    const balance = parseFloat(
-      session.current_balance + session.in_stock
+    const balance = (
+      parseFloat(session.current_balance) + parseFloat(session.in_stock)
     ).toFixed(2);
     return total + balance;
   }, 0);
