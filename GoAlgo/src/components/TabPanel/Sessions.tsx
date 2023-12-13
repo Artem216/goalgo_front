@@ -11,7 +11,7 @@ export interface botSession {
   start_balance: string;
   status: boolean;
   current_balance: string;
-  in_stock: number;
+  in_stock: string;
 }
 
 function Sessions() {
@@ -172,12 +172,14 @@ function Sessions() {
               </div>
               {/* <div style={{ flex: "1" }}>{card.stock}</div> */}
               <div style={{ flex: "1", marginLeft: "20px" }}>
-                {card.current_balance + card.in_stock}
+                {parseInt(card.current_balance) + parseInt(card.in_stock)}
               </div>
               <div
                 style={{
                   color:
-                    card.current_balance + card.in_stock - card.start_balance <
+                    parseInt(card.current_balance) +
+                      parseInt(card.in_stock) -
+                      parseInt(card.start_balance) <
                     0
                       ? "red"
                       : "green",
@@ -185,7 +187,9 @@ function Sessions() {
                   marginLeft: "20px",
                 }}
               >
-                {card.current_balance + card.in_stock - card.start_balance}
+                {parseInt(card.current_balance) +
+                  parseInt(card.in_stock) -
+                  parseInt(card.start_balance)}
               </div>
               <div style={{ flex: "1" }}>
                 <Button
