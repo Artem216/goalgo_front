@@ -11,12 +11,13 @@ export interface botSession {
   start_balance: string;
   status: boolean;
   current_balance: string;
+  in_stock: number;
 }
 
 function Sessions() {
   const [loading, setLoading] = useState(true);
-  const [userBotSessions, setUserBotSessions] = useState([]);
-  const [activeStates, setActiveStates] = useState([]);
+  const [userBotSessions, setUserBotSessions] = useState<botSession[]>([]);
+  const [activeStates, setActiveStates] = useState<boolean[]>([]);
 
   const fetchBotSessions = async () => {
     try {
@@ -35,48 +36,13 @@ function Sessions() {
     }
   };
 
-  const updateCurrentBalance = (targetInstrumentCode, newBalance) => {
-    const updatedSessions = userBotSessions.map((session) => {
-      if (session.instrument_code === targetInstrumentCode) {
-        return { ...session, current_balance: newBalance };
-      }
-      return session;
-    });
-    setUserBotSessions(updatedSessions);
-  };
-
-  const postData = async (instrumentCode) => {
-    try {
-      const response = await axios.post(
-        `${API_URL}/api/v1/trader/user_deals_by_instrument`,
-        {
-          instrument_code: instrumentCode,
-        },
-        {
-          headers: authHeader(),
-        }
-      );
-      const lastDeal = response.data[response.data.length - 1];
-      if (lastDeal.deal_type === "buy") {
-        4;
-        const new_balance = lastDeal.quantity * lastDeal.price;
-        updateCurrentBalance(instrumentCode, new_balance);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   useEffect(() => {
     fetchBotSessions();
   }, []);
 
-  useEffect(() => {
-    userBotSessions.forEach((session) => {
-      const { instrument_code } = session;
-      postData(instrument_code);
-    });
-  }, [userBotSessions]);
+  // useEffect(() => {
+
+  // }, );
   // const [loading, setLoading] = useState(true);
   // const [userBotSessions, setUserBotSessions] = useState<botSession[]>([]);
   // const [activeStates, setActiveStates] = useState<boolean[]>([]);
@@ -206,19 +172,20 @@ function Sessions() {
               </div>
               {/* <div style={{ flex: "1" }}>{card.stock}</div> */}
               <div style={{ flex: "1", marginLeft: "20px" }}>
-                {card.current_balance}
+                {card.current_balance + card.in_stock}
               </div>
               <div
                 style={{
                   color:
-                    card.current_balance - card.start_balance < 0
+                    card.current_balance + card.in_stock - card.start_balance <
+                    0
                       ? "red"
                       : "green",
                   flex: "1",
                   marginLeft: "20px",
                 }}
               >
-                {card.current_balance - card.start_balance}
+                {card.current_balance + card.in_stock - card.start_balance}
               </div>
               <div style={{ flex: "1" }}>
                 <Button
