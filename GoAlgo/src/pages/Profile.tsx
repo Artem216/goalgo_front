@@ -50,7 +50,7 @@ export function UserCard() {
     const balance = (
       parseFloat(session.current_balance) + parseFloat(session.in_stock)
     ).toFixed(2);
-    return total + balance;
+    return parseFloat(total).toFixed(2) + parseFloat(balance).toFixed(2);
   }, 0);
 
   useEffect(() => {
