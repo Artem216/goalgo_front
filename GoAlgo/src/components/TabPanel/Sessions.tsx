@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { Button, Card } from "@mui/material";
+import { Button } from "@mui/material";
 
 import axios from "axios";
 import { API_URL } from "../../config";
@@ -67,17 +67,15 @@ function Sessions() {
           paddingRight: "20px",
         }}
       >
-        <div style={{ flex: "1" }}>Бот/Акция</div>
+        <div style={{ flex: "1" }}>Акция</div>
         <div style={{ flex: "1" }}>Баланс</div>
         <div style={{ flex: "1" }}>Прибыль</div>
         <div style={{ flex: "1" }}></div>
       </div>
       {userBotSessions.map((card, index) => {
         const isActive = activeStates[index]; // Получаем текущее состояние для каждой сессии бота
-
         return (
           <div
-            // key={card.id}
             style={{
               background: "#f2f2f2",
               display: "flex",
@@ -88,21 +86,22 @@ function Sessions() {
               fontFamily: "Roboto, sans-serif",
             }}
           >
-            <div style={{ fontSize: "24px", fontWeight: "bold" }}>
-              {card.instrument_code}
-            </div>
             <div
               style={{
                 display: "flex",
                 flexDirection: "row",
                 fontSize: "18px",
                 justifyContent: "space-between",
+                alignItems: "center",
                 paddingLeft: "20px",
                 paddingRight: "20px",
                 marginTop: "10px",
               }}
             >
-              <div style={{ flex: "1" }}>{card.stock}</div>
+              <div style={{ flex: "1", fontWeight: "bold", fontSize: "20px" }}>
+                {card.instrument_code}
+              </div>
+              {/* <div style={{ flex: "1" }}>{card.stock}</div> */}
               <div style={{ flex: "1", marginLeft: "20px" }}>
                 {card.current_balance}
               </div>
@@ -119,7 +118,10 @@ function Sessions() {
                 {card.current_balance - card.start_balance}
               </div>
               <div style={{ flex: "1" }}>
-                <Button onClick={() => handleBotStatus(index)}>
+                <Button
+                  variant="contained"
+                  onClick={() => handleBotStatus(index)}
+                >
                   {isActive ? "Остановить" : "Старт"}
                 </Button>
               </div>

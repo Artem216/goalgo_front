@@ -15,11 +15,7 @@ interface Pages {
   url: string;
   name: string;
 }
-let pages_list: Pages[] = [
-  { url: "/profile", name: "Профиль" },
-  { url: "/stats", name: "Статистика акций" },
-  { url: "/news", name: "Новости" },
-];
+let pages_list: Pages[] = [{ url: "/profile", name: "Профиль" }];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -39,9 +35,6 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <div
-            // variant="h6"
-            // noWrap
-            // component="a"
             href="/"
             style={{
               mr: 2,
@@ -53,9 +46,23 @@ function ResponsiveAppBar() {
               textDecoration: "none",
             }}
           >
-            <a href="/">
-              <img src={logo} style={{ width: "80px", height: "80px" }} />
-            </a>
+            <div
+              style={{
+                display: "inline-block",
+                width: "75px",
+                height: "75px",
+                borderRadius: "50%",
+                overflow: "hidden",
+                backgroundColor: "white",
+              }}
+            >
+              <a href="/">
+                <img
+                  src={logo}
+                  style={{ width: "75px", height: "75px", objectFit: "cover" }}
+                />
+              </a>
+            </div>
           </div>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -120,7 +127,14 @@ function ResponsiveAppBar() {
                 key={page.name}
                 onClick={handleCloseNavMenu}
                 href={page.url}
-                sx={{ my: 2, color: "white", display: "block" }}
+                sx={{
+                  my: 2,
+                  ml: 2,
+                  color: "white",
+                  display: "block",
+                  fontSize: "25px",
+                  fontFamily: "Roboto, sans-serif",
+                }}
               >
                 {page.name}
               </Button>

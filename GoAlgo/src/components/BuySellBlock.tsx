@@ -73,6 +73,7 @@ const BuySellBlock: React.FC = () => {
           paddingBottom: "20px",
           minHeight: "700px",
           border: "1px solid red",
+          fontFamily: "Roboto, sans-serif",
         }}
       >
         <p
@@ -107,7 +108,7 @@ const BuySellBlock: React.FC = () => {
               flexDirection: "row",
               padding: "10px 20px",
               backgroundColor:
-                transaction.deal_type == "buy" ? "#21D329" : "#D32121",
+                transaction.deal_type == "buy" ? "#4DFF4D" : "#FF4D4D",
               borderRadius: "8px",
               marginTop: "5px",
               marginRight: "20px",

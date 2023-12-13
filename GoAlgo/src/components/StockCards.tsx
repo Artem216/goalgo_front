@@ -17,32 +17,39 @@ function StockCards() {
 
   return (
     <div>
-      <Marquee style={{ borderRadius: "8px" }}>
+      <Marquee pauseOnHover={true} style={{ borderRadius: "8px" }}>
         {stocks.map((stock) => (
           <div
             style={{
               display: "flex",
               flexDirection: "column",
-              background: "#252525",
-              color: stock[12] < 0 ? "red" : "green",
-              height: "50px",
-              width: "140px",
+              background: "#black",
+              color: stock[12] < 0 ? "#FF0000" : "#00FF00",
+              height: "60px",
+              width: "180px",
+              fontFamily: "Roboto, sans-serif",
             }}
           >
             <div
               className="stockName"
-              style={{ color: "rgba(255, 255, 255, 0.912)" }}
+              style={{ color: "rgba(255, 255, 255, 0.912)", fontSize: "20px" }}
             >
               {stock[2]}
             </div>
             <div style={{ display: "flex" }}>
               <div
                 className="stockPrClose"
-                style={{ color: " rgba(255, 255, 255, 0.912)" }}
+                style={{
+                  color: " rgba(255, 255, 255, 0.912)",
+                  fontSize: "20px",
+                }}
               >
                 {stock[6]}
               </div>
-              <div className="stockPrChange" style={{ paddingLeft: "10px" }}>
+              <div
+                className="stockPrChange"
+                style={{ paddingLeft: "10px", fontSize: "20px" }}
+              >
                 {stock[12]}
               </div>
             </div>
