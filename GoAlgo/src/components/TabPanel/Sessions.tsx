@@ -190,7 +190,7 @@ function Sessions() {
                   variant="contained"
                   onClick={() => handleBotStatus(index)}
                 >
-                  {isActive ? "Старт" : ""Остановить"}
+                  {isActive ? "Старт" : "Остановить"}
                 </Button>
               </div>
             </div>
